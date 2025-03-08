@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Galaxy Profile Dashboard</title>
+  
+  <!-- Bootstrap CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  />
+  <!-- Font Awesome for Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanwz6Tr+9MDN7ZIfgXcyx2AcV2aAi6BqvS1Y5LaTHIrWRrI+7nU8wQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg-color: #0a0e1a;         /* Fallback background color */
+      --card-color: #1c1f2a;       /* Card background color */
+      --accent: #ff8b3d;           /* Accent color (orange) */
+      --text-light: #ffffff;
+      --text-mid: #cfcfcf;
+    }
+
+    /* BODY with astronaut/space background */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-color) no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text-light);
+      min-height: 100vh;
+      position: relative;
+      /* Replace this with a real space + astronaut image */
+      background-image: url("https://via.placeholder.com/1920x1080.png?text=Astronaut+Background");
+    }
+
+    /* TWINKLING STARS LAYER */
+    .stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1; /* On top of background, behind content */
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 70%;
+      opacity: 0.5;
+      animation-name: twinkle;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    h1, h2, h3, h4, h5 {
+      font-family: 'Bubblegum Sans', cursive;
+      color: var(--accent);
+      margin: 0;
+    }
+
+    /* DASHBOARD LAYOUT */
+    .dashboard-container {
+      display: flex;
+      min-height: 100vh;
+      position: relative;
+      z-index: 2; /* So content is above the stars */
+      background: rgba(0,0,0,0.3); /* Slight overlay for readability */
+    }
+    .galaxy-sidebar {
+      width: 320px;
+      background-color: #131721;
+      border-right: 3px solid #2a2e3a;
+      padding: 2rem 1rem;
+    }
+
+    /* SIDEBAR PROFILE */
+    .sidebar-profile {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .sidebar-profile img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid var(--accent);
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .sidebar-profile img:hover {
+      transform: scale(1.06) rotate(3deg);
+    }
+    .sidebar-username {
+      margin-top: 0.5rem;
+      font-size: 1.5rem;
+      color: var(--text-mid);
+    }
+
+    /* SIDEBAR NAV */
+    .sidebar-nav .nav-link {
+      font-size: 1.6rem;
+      color: var(--text-mid);
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-radius: 8px;
+      padding: 0.4rem 1rem;
+    }
+    .sidebar-nav .nav-link i {
+      font-size: 2rem;
+    }
+    .sidebar-nav .nav-link.active,
+    .sidebar-nav .nav-link:hover {
+      background-color: #1e2532;
+      color: var(--accent);
+    }
+
+    /* MAIN CONTENT */
+    .galaxy-content {
+      flex-grow: 1;
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* SECTIONS */
+    .section {
+      margin-bottom: 1rem;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .section-header h1 {
+      font-size: 2.7rem; /* Larger text for headings */
+      margin-bottom: 0.3rem;
+    }
+    .section-header p {
+      font-size: 1.5rem;
+      color: var(--text-mid);
+      margin: 0;
+    }
+
+    /* HOME BASE */
+    .home-base-grid .card {
+      background-color: var(--card-color);
+      border: 1px solid #2a2e3a;
+      border-radius: 15px;
+      transition: transform 0.3s;
+    }
+    .home-base-grid .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 15px rgba(255,255,255,0.1);
+    }
+    .home-base-grid .card-body h5 {
+      font-size: 2.9rem; /* Bigger card titles */
+      margin-bottom: 0.3rem;
+    }
+    .home-base-grid .card-body p {
+      font-size: 1.5rem; /* Larger text inside cards */
+      color: var(--text-mid);
+    }
+    .home-base-grid .btn {
+      font-size: 1.3rem;
+    }
+
+    .achievements-list {
+      margin-top: 1.7rem;
+    }
+    .achievements-list .list-group-item {
+      background-color: var(--card-color);
+      color: var(--text-light);
+      border: 2px solid #2a2e3a;
+      margin-bottom: 1rem;
+      font-size: 1.5rem; /* Larger text for achievements */
+    }
+
+    /* AVATAR SECTION */
+    .avatar-section {
+      text-align: center;
+    }
+    .avatar-section img {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 4px solid var(--accent);
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .avatar-section img:hover {
+      transform: scale(1.05) rotate(3deg);
+    }
+    .avatar-edit-btn {
+      margin-top: 1rem;
+      font-size: 1.3rem;
+      color: var(--accent);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    /* SKILLS SECTION (RADAR CHART) */
+    .skill-chart-container {
+      margin: 0 auto;
+      max-width: 700px;
+      text-align: center;
+    }
+    .skill-chart-container canvas {
+      width: 100%;
+      max-width: 600px;
+      background: #222;
+      border-radius: 8px;
+    }
+
+    /* BADGE COLLECTION */
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .badge-card {
+      background-color: var(--card-color);
+      border: 1px solid #2a2e3a;
+      border-radius: 15px;
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.3s;
+      cursor: pointer;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .badge-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 15px rgba(255,255,255,0.1);
+    }
+    .badge-card img {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 0.8rem;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid var(--accent);
+      background: #000;
+    }
+    .badge-card h5 {
+      font-size: 1.5rem; /* Bigger badge title */
+      margin-bottom: 0.3rem;
+      color: var(--accent);
+    }
+    .badge-card p {
+      font-size: 1.2rem; /* Larger badge text */
+      color: var(--text-mid);
+      margin: 0;
+    }
+
+    /* TIMELINE */
+    .timeline-list {
+      margin-top: 1rem;
+    }
+    .timeline-step {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .timeline-icon {
+      font-size: 2.2rem;
+      color: var(--accent);
+      margin-right: 1rem;
+    }
+    .timeline-content {
+      background-color: var(--card-color);
+      border-radius: 15px;
+      padding: 1rem;
+      flex-grow: 1;
+    }
+    .timeline-content h6 {
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+      color: var(--accent);
+    }
+    .timeline-content p {
+      font-size: 1.2rem;
+      color: var(--text-mid);
+      margin: 0;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 992px) {
+      .dashboard-container {
+        flex-direction: column;
+      }
+      .galaxy-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 3px solid #2a2e3a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Twinkling Stars Layer -->
+  <div class="stars" id="starField"></div>
+
+  <div class="dashboard-container">
+    <!-- SIDEBAR -->
+    <aside class="galaxy-sidebar">
+      <div class="sidebar-profile">
+        <!-- Hidden file input for changing avatar -->
+        <input type="file" id="avatarUpload" accept="image/*" style="display:none;" />
+        <img
+          src="mario-front.gif"
+          alt="Profile Pic"
+          id="sidebarPic"
+        />
+        <div class="sidebar-username" id="sidebarUsername">Space Cadet</div>
+      </div>
+      <nav class="sidebar-nav nav flex-column">
+        <button class="nav-link active" data-section="home-base">
+          <i class="fas fa-home"></i> Home Base
+        </button>
+        <button class="nav-link" data-section="avatar">
+          <i class="fas fa-user-astronaut"></i> My Avatar
+        </button>
+        <button class="nav-link" data-section="skills">
+          <i class="fas fa-brain"></i> My Skills
+        </button>
+        <button class="nav-link" data-section="badges">
+          <i class="fas fa-trophy"></i> Badge Collection
+        </button>
+        <button class="nav-link" data-section="timeline">
+          <i class="fas fa-rocket"></i> Adventure Timeline
+        </button>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="galaxy-content">
+      <!-- HOME BASE SECTION -->
+      <section id="home-base" class="section">
+        <div class="section-header">
+          <h1 id="welcomeTitle">Welcome back, Space Cadet!</h1>
+          <p>
+            <strong style="font-size:1.3rem;">Kid-friendly Profile System</strong> – Track progress, achievements, and skills in a safe, ad-free environment.
+          </p>
+        </div>
+        <!-- Large row with big cards -->
+        <div class="row row-cols-1 row-cols-md-3 g-3 home-base-grid">
+          <div class="col">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5>My Avatar</h5>
+                <p>Customize your space explorer.</p>
+                <button class="btn btn-outline-light" data-section="avatar">View Avatar</button>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5>My Badges</h5>
+                <p>You've earned 12 out of 30 badges.</p>
+                <button class="btn btn-outline-light" data-section="badges">View Badges</button>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5>My Progress</h5>
+                <p>You're 65% through your journey!</p>
+                <button class="btn btn-outline-light" data-section="timeline">View Timeline</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Achievements -->
+        <h3 class="mt-4">Recent Achievements</h3>
+        <ul class="list-group achievements-list">
+          <li class="list-group-item">
+            <strong>Math Wizard</strong> – Completed 10 math puzzles in a row
+          </li>
+          <li class="list-group-item">
+            <strong>Story Explorer</strong> – Read 5 interactive stories
+          </li>
+          <li class="list-group-item">
+            <strong>Creative Genius</strong> – Built your first program
+          </li>
+        </ul>
+      </section>
+
+      <!-- AVATAR SECTION -->
+      <section id="avatar" class="section d-none avatar-section">
+        <div class="section-header">
+          <h1>My 3D Avatar</h1>
+        </div>
+        <img
+          src="https://via.placeholder.com/300x300.png?text=3D+Avatar"
+          alt="3D Avatar"
+          id="avatarPreview"
+        />
+        <div class="avatar-edit-btn" id="changeAvatarBtn">Change Avatar</div>
+        <p class="mt-3">
+          Personalize your space explorer! (Embed a 3D model or let kids choose suits, helmets, etc.)
+        </p>
+      </section>
+
+      <!-- SKILLS SECTION -->
+      <section id="skills" class="section d-none">
+        <div class="section-header">
+          <h1>My Skills</h1>
+          <p>Visualize your progress in different skill categories.</p>
+        </div>
+        <div class="skill-chart-container">
+          <canvas id="radarChart" width="600" height="600"></canvas>
+        </div>
+        <p class="text-center mt-3">
+          Categories: Logic, Creativity, Problem-Solving, Collaboration, Communication
+        </p>
+      </section>
+
+      <!-- BADGE COLLECTION SECTION -->
+      <section id="badges" class="section d-none">
+        <div class="section-header">
+          <h1>My Badge Collection</h1>
+          <p>Collect badges as you complete challenges and missions.</p>
+        </div>
+        <div class="badge-grid">
+          <!-- Replace images with your own space-themed images -->
+          <div class="badge-card">
+            <img src="1.jpg" alt="Badge">
+            <h5>Math Explorer</h5>
+            <p>Mastered 10 math challenges</p>
+          </div>
+          <div class="badge-card">
+            <img src="2.jpg" alt="Badge">
+            <h5>Reading Champion</h5>
+            <p>Finished 5 story quests</p>
+          </div>
+          <div class="badge-card">
+            <img src="3.webp" alt="Badge">
+            <h5>Science Whiz</h5>
+            <p>Completed fun science experiments</p>
+          </div>
+          <div class="badge-card">
+            <img src="1.jpg" alt="Badge">
+            <h5>Creative Genius</h5>
+            <p>Made your first program</p>
+          </div>
+          <div class="badge-card">
+            <img src="1.jpg" alt="Badge">
+            <h5>Space Explorer</h5>
+            <p>Explored the space expansion pack</p>
+          </div>
+          <div class="badge-card">
+            <img src="2.jpg" alt="Badge">
+            <h5>Team Player</h5>
+            <p>Helped friends with their challenges</p>
+          </div>
+          <div class="badge-card">
+            <img src="2.jpg" alt="Badge">
+            <h5>Coding Wizard</h5>
+            <p>Wrote your first JavaScript code</p>
+          </div>
+          <div class="badge-card">
+            <img src="3.webp" alt="Badge">
+            <h5>Adventure Master</h5>
+            <p>Completed the main storyline</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ADVENTURE TIMELINE SECTION -->
+      <section id="timeline" class="section d-none">
+        <div class="section-header">
+          <h1>Adventure Timeline</h1>
+          <p>Track your story milestones and missions completed.</p>
+        </div>
+        <div class="timeline-list">
+          <div class="timeline-step">
+            <div class="timeline-icon">🚀</div>
+            <div class="timeline-content">
+              <h6>Lift Off</h6>
+              <p>Created your profile and launched your learning journey.</p>
+            </div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-icon">🔭</div>
+            <div class="timeline-content">
+              <h6>Discovery</h6>
+              <p>Unlocked basic math and reading modules.</p>
+            </div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-icon">🪐</div>
+            <div class="timeline-content">
+              <h6>Planet Logic</h6>
+              <p>Completed 5 logic puzzles and earned the Math Explorer badge.</p>
+            </div>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-icon">💡</div>
+            <div class="timeline-content">
+              <h6>Creative Breakthrough</h6>
+              <p>Designed your first mini-game, unlocking Creative Genius.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+  ></script>
+
+  <!-- Vanilla JS for toggling sections, avatar upload, radar chart, and star generation -->
+  <script>
+    /**************************************************************
+     * 0) TWINKLING STARS GENERATION
+     **************************************************************/
+    const starField = document.getElementById('starField');
+    const starCount = 120; // Number of stars
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      // Random position
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      // Random size (bigger range for variety)
+      const size = Math.random() * 3 + 2;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      // Random animation duration
+      const duration = (Math.random() * 2 + 1).toFixed(2);
+      star.style.animationDuration = duration + 's';
+      starField.appendChild(star);
+    }
+
+    /**************************************************************
+     * 1) RETRIEVE USER NAME FROM localStorage (IF ANY)
+     **************************************************************/
+    const storedName = localStorage.getItem('kidProfileName') || 'Space Cadet';
+    document.getElementById('sidebarUsername').textContent = storedName;
+    document.getElementById('welcomeTitle').textContent = `Welcome back, ${storedName}!`;
+
+    /**************************************************************
+     * 2) SIDEBAR NAVIGATION
+     **************************************************************/
+    const navLinks = document.querySelectorAll('.galaxy-sidebar .nav-link');
+    const sections = document.querySelectorAll('.section');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        // Remove 'active' from all nav links
+        navLinks.forEach(nav => nav.classList.remove('active'));
+        link.classList.add('active');
+
+        // Hide all sections
+        sections.forEach(sec => sec.classList.add('d-none'));
+
+        // Show the targeted section
+        const target = link.getAttribute('data-section');
+        document.getElementById(target).classList.remove('d-none');
+      });
+    });
+
+    /**************************************************************
+     * 3) AVATAR UPLOAD
+     **************************************************************/
+    const sidebarPic = document.getElementById('sidebarPic');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const changeAvatarBtn = document.getElementById('changeAvatarBtn');
+    const avatarUpload = document.getElementById('avatarUpload');
+
+    sidebarPic.addEventListener('click', () => avatarUpload.click());
+    changeAvatarBtn.addEventListener('click', () => avatarUpload.click());
+
+    avatarUpload.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = evt => {
+          sidebarPic.src = evt.target.result;
+          avatarPreview.src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    /**************************************************************
+     * 4) BASIC RADAR CHART (VANILLA JS)
+     **************************************************************/
+    const radarCanvas = document.getElementById('radarChart');
+    if (radarCanvas) {
+      const ctx = radarCanvas.getContext('2d');
+      const centerX = radarCanvas.width / 2;
+      const centerY = radarCanvas.height / 2;
+      const radius = 200; // Large radius
+      const categories = 5;
+      const angles = [];
+      // Example skill distribution: Logic, Creativity, Problem-Solving, Collaboration, Communication
+      const skillValues = [80, 60, 70, 50, 90];
+
+      // Calculate angles
+      for (let i = 0; i < categories; i++) {
+        angles.push((Math.PI * 2 * i) / categories);
+      }
+
+      // Draw radial grid
+      ctx.strokeStyle = '#444';
+      for (let level = 1; level <= 5; level++) {
+        ctx.beginPath();
+        for (let i = 0; i < categories; i++) {
+          const x = centerX + (radius * level * 0.2) * Math.cos(angles[i]);
+          const y = centerY + (radius * level * 0.2) * Math.sin(angles[i]);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      // Draw skill polygon
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(255, 139, 61, 0.4)';
+      ctx.strokeStyle = '#ff8b3d';
+      for (let i = 0; i < categories; i++) {
+        const ratio = skillValues[i] / 100;
+        const x = centerX + radius * ratio * Math.cos(angles[i]);
+        const y = centerY + radius * ratio * Math.sin(angles[i]);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
+  </script>
+</body>
+</html>

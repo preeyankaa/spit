@@ -1,0 +1,101 @@
+/* In App.css */
+body {
+    background: linear-gradient(45deg, #1a1a2e, #16213e);
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: 'Comic Neue', cursive;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.mario-animation {
+    margin-top: 20px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.mario-gif {
+    width: 200px;
+    filter: drop-shadow(0 0 15px #ffd700);
+}
+
+.login-container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(113, 73, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    margin-top: 20px;
+}
+
+.spaceship-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+.welcome-text {
+    color: #ff6b6b;
+    font-family: 'Bubblegum Sans', cursive;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 30px;
+}
+
+.input-field {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #4ecdc4 !important;
+    border-radius: 15px !important;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.input-field:focus {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 15px #4ecdc4 !important;
+}
+
+.start-button {
+    background: #4ecdc4 !important;
+    color: white !important;
+    font-size: 1.2rem;
+    padding: 12px 30px;
+    border-radius: 25px !important;
+    border: none;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.start-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #4ecdc4;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Add stars animation */
+.stars-bg {
+    animation: twinkle 2s infinite;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+    100% { opacity: 0.3; }
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeKids - Friends & Collaboration</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Replace local socket.io with CDN version -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 CodeKids Friends</h1>
+            <div class="profile-badge">
+                <img src="mario-front.gif" alt="Profile" class="profile-pic">
+                <span class="username">jay</span>
+            </div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab active" data-tab="friends">👥 Friends</button>
+            <button class="tab" data-tab="challenges">🎮 Challenges</button>
+            <button class="tab" data-tab="messages">💬 Messages</button>
+        </nav>
+
+        <main>
+            <section id="friends" class="tab-content active">
+                <div class="search-bar">
+                    <input type="text" placeholder="Find new friends by username...">
+                    <button class="add-friend">Add Friend</button>
+                </div>
+                
+                <div class="friends-list">
+                    <div class="friend-card">
+                        <img src="https://images.unsplash.com/photo-1570158268183-d296b2892211?w=80&h=80&fit=crop" alt="Friend" class="friend-pic">
+                        <div class="friend-info">
+                            <h3>NinjaCoder</h3>
+                            <span class="level">Level 12</span>
+                            <span class="status online">Online</span>
+                        </div>
+                        <div class="friend-actions">
+                            <button class="message-btn" data-friend="NinjaCoder" data-pic="https://images.unsplash.com/photo-1570158268183-d296b2892211?w=80&h=80&fit=crop">Message</button>
+                            <button class="challenge-btn">Challenge</button>
+                        </div>
+                    </div>
+
+                    <div class="friend-card">
+                        <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=80&h=80&fit=crop" alt="Friend" class="friend-pic">
+                        <div class="friend-info">
+                            <h3>RocketProgrammer</h3>
+                            <span class="level">Level 15</span>
+                            <span class="status offline">Offline</span>
+                        </div>
+                        <div class="friend-actions">
+                            <button class="message-btn" data-friend="RocketProgrammer" data-pic="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=80&h=80&fit=crop">Message</button>
+                            <button class="challenge-btn">Challenge</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="challenges" class="tab-content">
+                <div class="challenges-list">
+                    <div class="challenge-card">
+                        <div class="challenge-header">
+                            <h3>🏰 Build a Magic Castle</h3>
+                            <span class="difficulty beginner">Beginner</span>
+                        </div>
+                        <p>Team up with friends to create an enchanted castle using loops and functions!</p>
+                        <div class="challenge-footer">
+                            <span>👥 2-4 players</span>
+                            <button class="join-btn">Join Challenge</button>
+                        </div>
+                    </div>
+
+                    <div class="challenge-card">
+                        <div class="challenge-header">
+                            <h3>🚀 Space Adventure</h3>
+                            <span class="difficulty intermediate">Intermediate</span>
+                        </div>
+                        <p>Work together to program a spaceship's navigation system!</p>
+                        <div class="challenge-footer">
+                            <span>👥 2-3 players</span>
+                            <button class="join-btn">Join Challenge</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="messages" class="tab-content">
+                <div class="quick-messages">
+                    <h3>Quick Messages</h3>
+                    <div class="message-buttons">
+                        <button>Great job! 🌟</button>
+                        <button>Need help? 🤝</button>
+                        <button>Let's code together! 💻</button>
+                        <button>Amazing work! 🎉</button>
+                    </div>
+                </div>
+                <div class="messages-list">
+                    <!-- Messages will be added here dynamically -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Chat Window Template -->
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <img src="" alt="Friend" id="chatFriendPic">
+            <span id="chatFriendName"></span>
+            <button class="close-chat">✕</button>
+        </div>
+        <div class="chat-messages"></div>
+        <div class="chat-input">
+            <input type="text" placeholder="Type a message..." id="messageInput">
+            <button id="sendMessage">Send</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpaceCoders Academy | Learn Coding Through Space Adventures</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --space-blue: #0B3D91;
+            --star-yellow: #FFD700;
+            --terminal-bg: #1e1e1e;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #000428, #004e92);
+            color: white;
+            min-height: 100vh;
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 20px;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        /* Left Panel - Interactive Galaxy Map */
+        .galaxy-map {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid var(--star-yellow);
+        }
+
+        .map-node {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, #FFF, var(--star-yellow));
+            border-radius: 50%;
+            margin: 20px auto;
+            cursor: pointer;
+            transition: transform 0.3s;
+            position: relative;
+        }
+
+        /* Center Panel - Main Content */
+        .mission-interface {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Character Section */
+        .character-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid var(--star-yellow);
+        }
+
+        .astronaut-img {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .dialogue-bubble {
+            background: white;
+            color: var(--space-blue);
+            padding: 20px;
+            border-radius: 15px;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        /* Code Editor */
+        .code-editor {
+            background: var(--terminal-bg);
+            border-radius: 15px;
+            padding: 20px;
+            height: 400px;
+            border: 2px solid var(--star-yellow);
+        }
+
+        #codeInput {
+            width: 100%;
+            height: 300px;
+            background: transparent;
+            color: white;
+            border: none;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            padding: 15px;
+            resize: none;
+        }
+
+        /* Right Panel - Powerups */
+        .powerups-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid var(--star-yellow);
+        }
+
+        .powerup-card {
+            background: linear-gradient(45deg, #FF6B6B, #FFD700);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            animation: glow 2s infinite;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px #FFD700; }
+            50% { box-shadow: 0 0 20px #FFD700; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Left Panel -->
+        <div class="galaxy-map">
+            <h4 class="text-center mb-4">🌌 Mission Map</h4>
+            <div class="map-node" data-level="1">1</div>
+            <div class="map-node" data-level="2">2</div>
+            <div class="map-node" data-level="3">3</div>
+        </div>
+
+        <!-- Center Panel -->
+        <div class="mission-interface">
+            <!-- Character Section -->
+            <div class="character-section">
+                <img src="1.jpg" class="astronaut-img">
+                <div class="dialogue-bubble">
+                    <p id="dialogueText">Welcome to SpaceCoders Academy! Let's repair the spaceship using Python!</p>
+                    <div class="mt-3 d-flex gap-2">
+                        <button class="btn btn-primary" onclick="nextMission()">Next ➡️</button>
+                        <button class="btn btn-success" onclick="runCode()">🚀 Run Code</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code Editor -->
+            <div class="code-editor">
+                <div class="d-flex justify-content-between mb-3">
+                    <h4>🛸 spaceship.py</h4>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-info" onclick="showHint()">💡 Hint</button>
+                        <button class="btn btn-sm btn-warning" onclick="resetCode()">🔄 Reset</button>
+                    </div>
+                </div>
+                <textarea id="codeInput">print("Hello Space Cadet!")</textarea>
+                <div id="output" class="mt-3 text-success"></div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="powerups-panel">
+            <h4 class="text-center mb-4">🛠️ Earned Power-Ups</h4>
+            <div id="inventory">
+                <div class="powerup-card">🚀 Booster Pack</div>
+                <div class="powerup-card">🔧 Debug Tool</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State Management
+        let currentMission = 0;
+        const missions = [
+            {
+                dialogue: "Mission 1: Print 'Hello Earth!' using print()",
+                code: 'print("Hello Earth!")',
+                solution: 'Hello Earth!',
+                powerup: '🚀 Booster Pack'
+            },
+            {
+                dialogue: "Mission 2: Calculate 5 + 3 and print result",
+                code: 'print(5 + 3)',
+                solution: '8',
+                powerup: '🔧 Debug Tool'
+            }
+        ];
+
+        // Core Functions
+        function nextMission() {
+            if(currentMission < missions.length) {
+                document.getElementById('dialogueText').textContent = missions[currentMission].dialogue;
+                document.getElementById('codeInput').value = missions[currentMission].code;
+                currentMission++;
+            }
+        }
+
+        function runCode() {
+            const code = document.getElementById('codeInput').value;
+            const outputDiv = document.getElementById('output');
+            
+            try {
+                const result = new Function(`return ${code}`)();
+                const expected = missions[currentMission-1].solution;
+
+                if(result == expected) {
+                    outputDiv.innerHTML = `<div class="alert alert-success">${result}</div>`;
+                    unlockPowerUp(missions[currentMission-1].powerup);
+                } else {
+                    outputDiv.innerHTML = `<div class="alert alert-danger">❌ Expected: ${expected}</div>`;
+                }
+            } catch(error) {
+                outputDiv.innerHTML = `<div class="alert alert-danger">🛑 Error: ${error.message}</div>`;
+            }
+        }
+
+        function unlockPowerUp(powerup) {
+            const inventory = document.getElementById('inventory');
+            if(!inventory.innerHTML.includes(powerup)) {
+                inventory.innerHTML += `<div class="powerup-card">${powerup}</div>`;
+            }
+        }
+
+        function showHint() {
+            alert("Use the print() function to display messages!");
+        }
+
+        function resetCode() {
+            document.getElementById('codeInput').value = missions[currentMission-1].code;
+        }
+
+        // Initialize first mission
+        nextMission();
+    </script>
+</body>
+</html>
